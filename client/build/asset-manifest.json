@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9ecb9f91.css",
+    "main.js": "/static/js/main.799ba25f.js",
+    "static/media/brightflix-logo.png": "/static/media/brightflix-logo.3e72891e02d286e97ea8.png",
+    "static/media/Brightflix-icon.jpeg": "/static/media/Brightflix-icon.5493ae927ee843f15c9b.jpeg",
+    "static/media/Brightflix-text.jpeg": "/static/media/Brightflix-text.d292c44c42e724d6883a.jpeg",
+    "index.html": "/index.html",
+    "main.9ecb9f91.css.map": "/static/css/main.9ecb9f91.css.map",
+    "main.799ba25f.js.map": "/static/js/main.799ba25f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9ecb9f91.css",
+    "static/js/main.799ba25f.js"
+  ]
+}
