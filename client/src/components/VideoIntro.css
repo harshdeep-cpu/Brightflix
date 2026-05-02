@@ -1,0 +1,140 @@
+.video-intro {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s ease;
+}
+
+.video-intro.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Fallback animation shown if video doesn't play */
+.intro-fallback {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.intro-logo-anim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: introReveal 1s ease forwards;
+}
+
+@keyframes introReveal {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.globe-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  animation: spin3d 4s linear infinite;
+}
+
+@keyframes spin3d {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+.globe {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle at 35% 35%, #4fc3f7, #1565c0, #0d3b6e);
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  box-shadow: 0 0 40px rgba(79, 195, 247, 0.4);
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  border: 4px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  transform: rotateX(70deg);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.intro-brand-text {
+  display: flex;
+  gap: 4px;
+  font-family: 'Rajdhani', 'Poppins', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+
+.brand-bright {
+  color: white;
+  text-shadow: 0 0 30px rgba(255,255,255,0.5);
+}
+
+.brand-flix {
+  background: linear-gradient(135deg, #F47F1F, #FFD700, #FF6B00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(244,127,31,0.7));
+}
+
+.intro-tagline {
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeInUp 1s ease 0.5s both;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.skip-btn {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 10;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.skip-btn:hover {
+  background: rgba(244, 127, 31, 0.8);
+  border-color: #F47F1F;
+  transform: translateY(-2px);
+}
