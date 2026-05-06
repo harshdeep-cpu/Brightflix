@@ -24,14 +24,26 @@ function App() {
     const savedUser = localStorage.getItem('brightflix_user');
     if (savedUser) setUser(JSON.parse(savedUser));
 
-    // Show intro only on first visit or on page refresh
-    const hasSeenIntro = sessionStorage.getItem('intro_shown');
+    // Store intro flag PER DEVICE TYPE so mobile always gets mobile video
+    const deviceType = /Android|iPhone|iPod|BlackBerry|Windows Phone|Mobile/i.test(navigator.userAgent)
+      ? 'mobile'
+      : /iPad|Tablet|Kindle/i.test(navigator.userAgent)
+      ? 'tablet'
+      : 'desktop';
+
+    const introKey = `intro_shown_${deviceType}`;
+    const hasSeenIntro = sessionStorage.getItem(introKey);
     if (hasSeenIntro) setShowIntro(false);
   }, []);
 
   const handleIntroEnd = () => {
     setShowIntro(false);
-    sessionStorage.setItem('intro_shown', 'true');
+    const deviceType = /Android|iPhone|iPod|BlackBerry|Windows Phone|Mobile/i.test(navigator.userAgent)
+      ? 'mobile'
+      : /iPad|Tablet|Kindle/i.test(navigator.userAgent)
+      ? 'tablet'
+      : 'desktop';
+    sessionStorage.setItem(`intro_shown_${deviceType}`, 'true');
   };
 
   return (

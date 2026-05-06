@@ -20,11 +20,21 @@ import './VideoIntro.css';
     `object-fit: cover` will auto-crop it to fill the screen.
 */
 
-// Detect device type by screen width
+// Detect device — UA + screen size + touch signals
 const getDeviceType = () => {
-  const width = window.innerWidth;
-  if (width <= 480) return 'mobile';
-  if (width <= 1024) return 'tablet';
+  const ua = navigator.userAgent;
+  const isMobileUA = /Android|iPhone|iPod|BlackBerry|Windows Phone|Mobile/i.test(ua);
+  const isTabletUA  = /iPad|Tablet|Kindle|PlayBook|Silk|(Android(?!.*Mobile))/i.test(ua);
+  const dpr = window.devicePixelRatio || 1;
+  const logicalW = Math.min(screen.width, screen.height) / dpr;
+  const isTouch = navigator.maxTouchPoints > 0;
+
+  if (isMobileUA && !isTabletUA)   return 'mobile';
+  if (isTabletUA)                  return 'tablet';
+  if (isTouch && logicalW <= 500)  return 'mobile';
+  if (isTouch && logicalW <= 1024) return 'tablet';
+  if (logicalW <= 500)             return 'mobile';
+  if (logicalW <= 1024)            return 'tablet';
   return 'desktop';
 };
 
