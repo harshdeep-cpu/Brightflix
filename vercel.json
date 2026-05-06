@@ -1,0 +1,4 @@
+{
+  "installCommand": "npm install --ignore-scripts=false",
+  "buildCommand": "cd client && npm install && npm run build"
+}
