@@ -1,33 +1,62 @@
 /* HERO */
 .hero-section {
   position: relative;
-  background: linear-gradient(135deg, #FFF8F0 0%, #FFFAF5 40%, #FFF3E5 100%);
-  min-height: 520px;
+  background: linear-gradient(160deg, #FFF9EE 0%, #FFFBF2 35%, #FFF5E0 65%, #FFF0D0 100%);
+  min-height: 580px;
   display: flex;
   align-items: center;
   overflow: hidden;
   padding: 60px 0;
 }
 
-.hero-bg-left {
+/* TOP-LEFT large sun/blob — orange flooding in from corner diagonally */
+.hero-blob-tl {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 60%;
-  height: 100%;
-  opacity: 0.5;
+  top: -120px;
+  left: -140px;
+  width: 480px;
+  height: 480px;
   pointer-events: none;
+  z-index: 0;
+  opacity: 0.92;
 }
 
-.hero-bg-right {
+/* BOTTOM-RIGHT large sun/blob */
+.hero-blob-br {
   position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle, #F47F1F33 0%, #FFD70022 50%, transparent 70%);
-  border-radius: 50%;
+  bottom: -140px;
+  right: -120px;
+  width: 440px;
+  height: 440px;
   pointer-events: none;
+  z-index: 0;
+  opacity: 0.88;
+}
+
+/* LEFT dot grid — sits over the left blob area */
+.hero-dots-left {
+  position: absolute;
+  top: 50%;
+  left: 60px;
+  transform: translateY(-50%);
+  width: 220px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.55;
+}
+
+/* RIGHT dot grid — sits over the right blob area */
+.hero-dots-right {
+  position: absolute;
+  top: 50%;
+  right: 60px;
+  transform: translateY(-50%);
+  width: 220px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.55;
 }
 
 .hero-content {
@@ -36,7 +65,7 @@
   gap: 48px;
   align-items: center;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .hero-text {

@@ -75,8 +75,47 @@ const Home = () => {
     <div className="home">
       {/* HERO SECTION */}
       <section className="hero-section">
-        <div className="hero-bg-left dot-pattern" />
-        <div className="hero-bg-right" />
+        {/* TOP-LEFT orange sun blob — exact match to theme */}
+        <svg className="hero-blob-tl" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="blobGradTL" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#FF8C00" stopOpacity="1"/>
+              <stop offset="45%" stopColor="#FFA500" stopOpacity="0.9"/>
+              <stop offset="100%" stopColor="#FFD700" stopOpacity="0.5"/>
+            </radialGradient>
+          </defs>
+          <path d="M60,0 C160,-20 320,10 400,80 C480,150 520,280 480,380 C440,480 300,540 180,500 C60,460 -40,340 -20,200 C0,60 -40,20 60,0Z" fill="url(#blobGradTL)"/>
+        </svg>
+
+        {/* BOTTOM-RIGHT orange sun blob */}
+        <svg className="hero-blob-br" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="blobGradBR" cx="70%" cy="70%" r="70%">
+              <stop offset="0%" stopColor="#FF6B00" stopOpacity="1"/>
+              <stop offset="50%" stopColor="#FF8C00" stopOpacity="0.85"/>
+              <stop offset="100%" stopColor="#FFD700" stopOpacity="0.4"/>
+            </radialGradient>
+          </defs>
+          <path d="M440,500 C340,520 180,490 100,420 C20,350 -20,220 20,120 C60,20 200,-40 320,0 C440,40 540,160 520,300 C500,440 540,480 440,500Z" fill="url(#blobGradBR)"/>
+        </svg>
+
+        {/* LEFT dot grid pattern */}
+        <svg className="hero-dots-left" viewBox="0 0 220 400" xmlns="http://www.w3.org/2000/svg">
+          {Array.from({ length: 20 }).map((_, row) =>
+            Array.from({ length: 11 }).map((_, col) => (
+              <circle key={`${row}-${col}`} cx={col * 20 + 10} cy={row * 20 + 10} r="2.5" fill="#F47F1F" opacity="0.45"/>
+            ))
+          )}
+        </svg>
+
+        {/* RIGHT dot grid pattern */}
+        <svg className="hero-dots-right" viewBox="0 0 220 400" xmlns="http://www.w3.org/2000/svg">
+          {Array.from({ length: 20 }).map((_, row) =>
+            Array.from({ length: 11 }).map((_, col) => (
+              <circle key={`${row}-${col}`} cx={col * 20 + 10} cy={row * 20 + 10} r="2.5" fill="#F47F1F" opacity="0.45"/>
+            ))
+          )}
+        </svg>
 
         <div className="container hero-content">
           <div className="hero-text" key={activeSlide}>
@@ -259,3 +298,4 @@ const testimonials = [
 ];
 
 export default Home;
+
