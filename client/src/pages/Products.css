@@ -76,6 +76,41 @@
 }
 
 .cat-btn.active .cat-count { background: rgba(244,127,31,0.15); color: var(--primary); }
+.sub-category-list {
+  list-style: none;
+  padding-left: 16px;
+  margin-top: 4px;
+  border-left: 2px solid rgba(244, 127, 31, 0.2);
+}
+
+.sub-cat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 10px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  text-align: left;
+  gap: 6px;
+  transition: var(--transition);
+  font-family: 'Poppins', sans-serif;
+}
+
+.sub-cat-btn:hover {
+  background: rgba(244, 127, 31, 0.06);
+  color: var(--primary);
+}
+
+.sub-cat-btn.active {
+  color: var(--primary);
+  font-weight: 600;
+  background: rgba(244, 127, 31, 0.08);
+}
 
 .price-slider {
   width: 100%;

@@ -45,7 +45,7 @@
 }
 
 .footer-logo-sub {
-  font-size: 0.65rem;
+  font-size: 1.25rem;
   color: rgba(255,255,255,0.4);
   margin-top: 2px;
   font-weight: 400;
@@ -62,7 +62,21 @@
   display: flex;
   gap: 10px;
 }
+.footer-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  transition: var(--transition);
+}
 
+.footer-link-btn:hover {
+  color: var(--primary);
+}
 .social-icon {
   width: 36px;
   height: 36px;

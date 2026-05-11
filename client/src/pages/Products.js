@@ -1,70 +1,174 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import { AuthContext, CartContext } from '../App';
+import LightsIntro from '../components/LightsIntro';
 import './Products.css';
 
-const categories = ['All', 'Television', 'Air Conditioner', 'Refrigerator', 'Washing Machine', 'Air Cooler', 'Kitchen', 'Home Care', 'Air Purifier'];
-
-const mockProducts = [
-  { _id: '1', name: '4K Ultra HD Smart TV 55"', price: 45999, originalPrice: 65000, badge: 'Best Seller', rating: 4.8, reviews: 2341, category: 'Television' },
-  { _id: '2', name: 'Inverter Split AC 1.5 Ton', price: 38999, originalPrice: 52000, badge: 'Hot', rating: 4.7, reviews: 1823, category: 'Air Conditioner' },
-  { _id: '3', name: 'French Door Refrigerator 500L', price: 72999, originalPrice: 95000, badge: 'New', rating: 4.6, reviews: 987, category: 'Refrigerator' },
-  { _id: '4', name: 'Front Load Washing Machine 8kg', price: 34999, originalPrice: 48000, rating: 4.5, reviews: 1456, category: 'Washing Machine' },
-  { _id: '5', name: 'Tower Air Cooler 50L', price: 12999, originalPrice: 18000, badge: 'Hot', rating: 4.4, reviews: 3210, category: 'Air Cooler' },
-  { _id: '6', name: 'Microwave Oven 28L Convection', price: 14999, originalPrice: 22000, rating: 4.3, reviews: 765, category: 'Kitchen' },
-  { _id: '7', name: 'Robot Vacuum Cleaner', price: 24999, originalPrice: 35000, badge: 'New', rating: 4.6, reviews: 543, category: 'Home Care' },
-  { _id: '8', name: 'Air Purifier HEPA 13', price: 18999, originalPrice: 26000, rating: 4.7, reviews: 1234, category: 'Air Purifier' },
-  { _id: '9', name: 'Smart TV 43" FHD', price: 28999, originalPrice: 42000, rating: 4.5, reviews: 1876, category: 'Television' },
-  { _id: '10', name: 'Window AC 1 Ton 5 Star', price: 29999, originalPrice: 38000, rating: 4.4, reviews: 932, category: 'Air Conditioner' },
-  { _id: '11', name: 'Side-by-Side Refrigerator 700L', price: 95000, originalPrice: 130000, badge: 'New', rating: 4.7, reviews: 432, category: 'Refrigerator' },
-  { _id: '12', name: 'Semi-Auto Washing Machine 7.5kg', price: 14999, originalPrice: 22000, rating: 4.2, reviews: 2100, category: 'Washing Machine' },
-];
 
 const Products = () => {
-  const [searchParams] = useSearchParams();
-  const [products, setProducts] = useState(mockProducts);
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'All');
-  const [sortBy, setSortBy] = useState('default');
-  const [priceRange, setPriceRange] = useState([0, 200000]);
-  const [search, setSearch] = useState('');
+  const [searchParams]              = useSearchParams();
+  const { user }                    = useContext(AuthContext);
+  const { setCartCount }            = useContext(CartContext);
+
+  const [products, setProducts]     = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading]       = useState(true);
+
+  const [selectedCategory, setSelectedCategory]   = useState(searchParams.get('category') || 'All');
+  const [selectedSub, setSelectedSub]             = useState('All');
+  const [subOptions, setSubOptions]               = useState([]);
+  const [sortBy, setSortBy]                       = useState('default');
+  const [priceRange, setPriceRange]               = useState([0, 200000]);
+  const [search, setSearch]                       = useState('');
+  const [showLightsIntro, setShowLightsIntro] = useState(
+  searchParams.get('category') === 'Lights'
+);
+
+  useEffect(() => {
+    fetchCategories();
+    fetchProducts();
+  }, []);
+
+  // Update subcategory options when category changes
+  useEffect(() => {
+    if (selectedCategory === 'All') {
+      setSubOptions([]);
+      setSelectedSub('All');
+    } else {
+      const cat = categories.find(c => c.name === selectedCategory);
+      setSubOptions(cat?.subcategories || []);
+      setSelectedSub('All');
+    }
+  }, [selectedCategory, categories]);
+
+  const fetchCategories = async () => {
+    try {
+      const res  = await fetch('http://localhost:5000/api/categories');
+      const data = await res.json();
+      setCategories(data);
+    } catch (err) {
+      console.error('Failed to fetch categories:', err);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const res  = await fetch('http://localhost:5000/api/products');
+      const data = await res.json();
+      setProducts(data.products || data);
+    } catch (err) {
+      console.error('Failed to fetch products:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Add to cart function passed to ProductCard
+  const handleAddToCart = async (productId, quantity = 1) => {
+    try {
+      const res = await fetch('http://localhost:5000/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`,
+        },
+        body: JSON.stringify({ productId, quantity }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      setCartCount(data.items?.length || 0);
+      return true;
+    } catch (err) {
+      console.error('Add to cart failed:', err);
+      return false;
+    }
+  };
 
   const filtered = products
     .filter(p => selectedCategory === 'All' || p.category === selectedCategory)
+    .filter(p => selectedSub === 'All' || p.subcategory === selectedSub)
     .filter(p => p.price >= priceRange[0] && p.price <= priceRange[1])
     .filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
-      if (sortBy === 'price-asc') return a.price - b.price;
+      if (sortBy === 'price-asc')  return a.price - b.price;
       if (sortBy === 'price-desc') return b.price - a.price;
-      if (sortBy === 'rating') return (b.rating || 0) - (a.rating || 0);
+      if (sortBy === 'rating')     return (b.rating || 0) - (a.rating || 0);
       return 0;
     });
+
+    if (showLightsIntro) {
+  return <LightsIntro onComplete={() => setShowLightsIntro(false)} />;
+}
 
   return (
     <div className="products-page">
       <div className="products-hero">
         <div className="container">
           <h1>Our <span>Products</span></h1>
-          <p>Browse {products.length}+ premium home appliances</p>
+          <p>Browse {products.length}+ premium products</p>
         </div>
       </div>
 
       <div className="container products-layout">
-        {/* Sidebar */}
+
+        {/* ── Sidebar ── */}
         <aside className="products-sidebar">
           <div className="sidebar-section">
             <h3>Categories</h3>
             <ul className="category-list">
+
+              {/* All */}
+              <li>
+                <button
+                  className={`cat-btn ${selectedCategory === 'All' ? 'active' : ''}`}
+                  onClick={() => { setSelectedCategory('All'); setSelectedSub('All'); }}
+                >
+                  All
+                  <span className="cat-count">{products.length}</span>
+                </button>
+              </li>
+
+              {/* DB categories */}
               {categories.map(cat => (
-                <li key={cat}>
+                <li key={cat._id}>
                   <button
-                    className={`cat-btn ${selectedCategory === cat ? 'active' : ''}`}
-                    onClick={() => setSelectedCategory(cat)}
+                    className={`cat-btn ${selectedCategory === cat.name ? 'active' : ''}`}
+                    onClick={() => setSelectedCategory(cat.name)}
                   >
-                    {cat}
+                    <span>{cat.icon}</span> {cat.name}
                     <span className="cat-count">
-                      {cat === 'All' ? products.length : products.filter(p => p.category === cat).length}
+                      {products.filter(p => p.category === cat.name).length}
                     </span>
                   </button>
+
+                  {/* Subcategories — show when this category is selected */}
+                  {selectedCategory === cat.name && cat.subcategories?.length > 0 && (
+                    <ul className="sub-category-list">
+                      <li>
+                        <button
+                          className={`sub-cat-btn ${selectedSub === 'All' ? 'active' : ''}`}
+                          onClick={() => setSelectedSub('All')}
+                        >
+                          All {cat.name}
+                        </button>
+                      </li>
+                      {cat.subcategories.map(sub => (
+                        <li key={sub._id}>
+                          <button
+                            className={`sub-cat-btn ${selectedSub === sub.name ? 'active' : ''}`}
+                            onClick={() => setSelectedSub(sub.name)}
+                          >
+                            {sub.icon} {sub.name}
+                            <span className="cat-count">
+                              {products.filter(p => p.category === cat.name && p.subcategory === sub.name).length}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
@@ -73,10 +177,7 @@ const Products = () => {
           <div className="sidebar-section">
             <h3>Price Range</h3>
             <input
-              type="range"
-              min="0"
-              max="200000"
-              step="1000"
+              type="range" min="0" max="200000" step="1000"
               value={priceRange[1]}
               onChange={e => setPriceRange([0, parseInt(e.target.value)])}
               className="price-slider"
@@ -88,15 +189,13 @@ const Products = () => {
           </div>
         </aside>
 
-        {/* Main */}
+        {/* ── Main ── */}
         <div className="products-main">
           <div className="products-toolbar">
             <div className="products-search">
               <input
-                type="text"
-                placeholder="Search products..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
+                type="text" placeholder="Search products..."
+                value={search} onChange={e => setSearch(e.target.value)}
               />
             </div>
             <div className="toolbar-right">
@@ -110,15 +209,25 @@ const Products = () => {
             </div>
           </div>
 
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div className="products-grid-page">
+              {[...Array(6)].map((_, i) => <div key={i} className="skeleton-card" />)}
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="no-results">
               <span>🔍</span>
               <h3>No products found</h3>
-              <p>Try adjusting your filters</p>
+              <p>Try adjusting your filters or price range</p>
             </div>
           ) : (
             <div className="products-grid-page">
-              {filtered.map(p => <ProductCard key={p._id} product={p} />)}
+              {filtered.map(p => (
+                <ProductCard
+                  key={p._id}
+                  product={p}
+                  onAddToCart={handleAddToCart}  // 👈 pass cart function
+                />
+              ))}
             </div>
           )}
         </div>

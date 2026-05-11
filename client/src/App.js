@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -10,10 +10,17 @@ import Services from './pages/Services';
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
 import VideoIntro from './components/VideoIntro';
 
 export const CartContext = React.createContext();
 export const AuthContext = React.createContext();
+
+// 👇 Add ProtectedRoute here — after context exports
+const ProtectedRoute = ({ children }) => {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" />;
+};
 
 function App() {
   const [cartCount, setCartCount] = useState(0);
@@ -24,7 +31,6 @@ function App() {
     const savedUser = localStorage.getItem('brightflix_user');
     if (savedUser) setUser(JSON.parse(savedUser));
 
-    // Store intro flag PER DEVICE TYPE so mobile always gets mobile video
     const deviceType = /Android|iPhone|iPod|BlackBerry|Windows Phone|Mobile/i.test(navigator.userAgent)
       ? 'mobile'
       : /iPad|Tablet|Kindle/i.test(navigator.userAgent)
@@ -56,14 +62,30 @@ function App() {
               <Navbar />
               <main>
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetail />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/contact" element={<Contact />} />
-                  <Route path="/cart" element={<Cart />} />
+                  {/* Public routes */}
+                  <Route path="/"      element={<Home />}  />
                   <Route path="/login" element={<Login />} />
+
+                  {/* Protected routes 👇 */}
+                  <Route path="/products" element={
+                    <ProtectedRoute><Products /></ProtectedRoute>
+                  } />
+                  <Route path="/products/:id" element={
+                    <ProtectedRoute><ProductDetail /></ProtectedRoute>
+                  } />
+                  <Route path="/about" element={
+                    <ProtectedRoute><About /></ProtectedRoute>
+                  } />
+                  <Route path="/services" element={
+                    <ProtectedRoute><Services /></ProtectedRoute>
+                  } />
+                  <Route path="/contact" element={
+                    <ProtectedRoute><Contact /></ProtectedRoute>
+                  } />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/cart" element={
+                    <ProtectedRoute><Cart /></ProtectedRoute>
+                  } />
                 </Routes>
               </main>
               <Footer />

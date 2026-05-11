@@ -1,62 +1,33 @@
 /* HERO */
 .hero-section {
   position: relative;
-  background: linear-gradient(160deg, #FFF9EE 0%, #FFFBF2 35%, #FFF5E0 65%, #FFF0D0 100%);
-  min-height: 580px;
+  background: linear-gradient(135deg, #FFF8F0 0%, #FFFAF5 40%, #FFF3E5 100%);
+  min-height: 520px;
   display: flex;
   align-items: center;
   overflow: hidden;
   padding: 60px 0;
 }
 
-/* TOP-LEFT large sun/blob — orange flooding in from corner diagonally */
-.hero-blob-tl {
+.hero-bg-left {
   position: absolute;
-  top: -120px;
-  left: -140px;
-  width: 480px;
-  height: 480px;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  opacity: 0.5;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.92;
 }
 
-/* BOTTOM-RIGHT large sun/blob */
-.hero-blob-br {
+.hero-bg-right {
   position: absolute;
-  bottom: -140px;
-  right: -120px;
-  width: 440px;
-  height: 440px;
+  top: -80px;
+  right: -80px;
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, #F47F1F33 0%, #FFD70022 50%, transparent 70%);
+  border-radius: 50%;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.88;
-}
-
-/* LEFT dot grid — sits over the left blob area */
-.hero-dots-left {
-  position: absolute;
-  top: 50%;
-  left: 60px;
-  transform: translateY(-50%);
-  width: 220px;
-  height: 400px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.55;
-}
-
-/* RIGHT dot grid — sits over the right blob area */
-.hero-dots-right {
-  position: absolute;
-  top: 50%;
-  right: 60px;
-  transform: translateY(-50%);
-  width: 220px;
-  height: 400px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.55;
 }
 
 .hero-content {
@@ -65,7 +36,7 @@
   gap: 48px;
   align-items: center;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .hero-text {
@@ -357,6 +328,103 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+/* Login Prompt Banner */
+.login-prompt-banner {
+  background: linear-gradient(135deg, rgba(244,127,31,0.08), rgba(244,127,31,0.03));
+  border-top: 1px solid rgba(244,127,31,0.2);
+  border-bottom: 1px solid rgba(244,127,31,0.2);
+  padding: 16px 0;
+}
+
+.login-prompt-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.login-prompt-text {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.4rem;
+}
+
+.login-prompt-text h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 2px;
+}
+
+.login-prompt-text p {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  margin: 0;
+}
+
+.login-prompt-btn {
+  padding: 10px 24px;
+  background: var(--primary);
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.login-prompt-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* Locked products overlay */
+.products-wrapper {
+  position: relative;
+  min-height: 400px;
+}
+
+.products-wrapper.locked .products-grid {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.locked-overlay {
+  position: absolute;
+  top: 0;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.75);
+  border-radius: 12px;
+  gap: 10px;
+  text-align: center;
+}
+
+.locked-overlay span {
+  font-size: 2.5rem;
+}
+
+.locked-overlay h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.locked-overlay p {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  margin: 0;
+}
 
 /* OFFER BANNER */
 .offer-banner {
@@ -437,6 +505,23 @@
   display: flex;
   gap: 16px;
   font-size: 3rem;
+}
+
+.cat-subs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.cat-sub-tag {
+  font-size: 0.7rem;
+  background: rgba(244, 127, 31, 0.1);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(244, 127, 31, 0.2);
 }
 
 /* TESTIMONIALS */

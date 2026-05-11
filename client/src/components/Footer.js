@@ -1,20 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../App';
+import logo from '../assets/Brightflix-Text.png';
 import './Footer.css';
 
 const Footer = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleProtectedLink = (path) => {
+    user ? navigate(path) : navigate('/login');
+  };
+
+  const quickLinks = [
+    { label: 'Home',       path: '/',           protected: false },
+    { label: 'Products',   path: '/products',   protected: true  },
+    { label: 'About',      path: '/about',      protected: true  },
+    { label: 'Services',   path: '/services',   protected: true  },
+    { label: 'Contact Us', path: '/contact',    protected: true  },
+  ];
+
+  const categories = [
+    'Television', 'Air Conditioner', 'Refrigerator',
+    'Washing Machine', 'Air Cooler', 'Kitchen Appliances'
+  ];
+
   return (
     <footer className="footer">
       <div className="footer-top">
         <div className="container footer-grid">
+
           {/* Brand */}
           <div className="footer-brand">
             <div className="footer-logo">
-              <span className="footer-logo-icon">☀</span>
               <div>
-                <span className="footer-logo-bright">Bright</span>
-                <span className="footer-logo-flix">Flix</span>
-                <p className="footer-logo-sub">BharatSolarNetworkLimited</p>
+                <img src={logo} alt="Brightflix Logo" className="footer-logo-img" />
+                <p className="footer-logo-sub">Bharat Solar Network Limited</p>
               </div>
             </div>
             <p className="footer-tagline">
@@ -28,25 +49,47 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Links */}
+          {/* Quick Links */}
           <div className="footer-links-col">
             <h4>Quick Links</h4>
             <ul>
-              {['Home', 'Products', 'About', 'Services', 'Contact Us'].map(l => (
-                <li key={l}><Link to={`/${l === 'Home' ? '' : l.toLowerCase().replace(' ', '-')}`}>{l}</Link></li>
+              {quickLinks.map(link => (
+                <li key={link.label}>
+                  {link.protected ? (
+                    // 👇 protected links use button to check login
+                    <button
+                      className="footer-link-btn"
+                      onClick={() => handleProtectedLink(link.path)}
+                    >
+                      {link.label}
+                    </button>
+                  ) : (
+                    <Link to={link.path}>{link.label}</Link>
+                  )}
+                </li>
               ))}
             </ul>
           </div>
 
+          {/* Categories */}
           <div className="footer-links-col">
             <h4>Categories</h4>
             <ul>
-              {['Television', 'Air Conditioner', 'Refrigerator', 'Washing Machine', 'Air Cooler', 'Kitchen Appliances'].map(c => (
-                <li key={c}><Link to={`/products?category=${c}`}>{c}</Link></li>
+              {categories.map(c => (
+                <li key={c}>
+                  {/* 👇 all categories are protected */}
+                  <button
+                    className="footer-link-btn"
+                    onClick={() => handleProtectedLink(`/products?category=${c}`)}
+                  >
+                    {c}
+                  </button>
+                </li>
               ))}
             </ul>
           </div>
 
+          {/* Customer Care */}
           <div className="footer-links-col">
             <h4>Customer Care</h4>
             <ul>
@@ -62,6 +105,7 @@ const Footer = () => {
               <p>📍 New Delhi, India</p>
             </div>
           </div>
+
         </div>
       </div>
 

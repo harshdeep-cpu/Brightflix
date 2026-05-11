@@ -3,8 +3,13 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'brightflix_secret_key', { expiresIn: '30d' });
+// ── updated generateToken with isAdmin ──
+const generateToken = (id, isAdmin) => {
+  return jwt.sign(
+    { id, isAdmin },
+    process.env.JWT_SECRET || 'brightflix_secret_key',
+    { expiresIn: '30d' }
+  );
 };
 
 // Register
@@ -19,7 +24,8 @@ router.post('/register', async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id, user.isAdmin),
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -38,11 +44,17 @@ router.post('/login', async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      isAdmin: user.isAdmin,          // 👈 send isAdmin to frontend
+      token: generateToken(user._id, user.isAdmin),  // 👈 include in token
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+});
+
+// Logout — just a confirmation, real logout happens on client
+router.post('/logout', (req, res) => {
+  res.json({ message: 'Logged out successfully' });
 });
 
 // Get profile
