@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CartContext, AuthContext } from '../App';
+import { useNavigate } from 'react-router-dom';
 
 const categoryEmojis = {
   'Television': '📺', 'Air Conditioner': '❄️', 'Refrigerator': '🧊',
@@ -9,6 +10,7 @@ const categoryEmojis = {
 };
 
 const ProductDetail = () => {
+  const navigate = useNavigate();
   const { id }           = useParams();
   const { setCartCount } = useContext(CartContext);
   const { user }         = useContext(AuthContext);
@@ -242,7 +244,7 @@ const ProductDetail = () => {
               >
                 {added ? '✓ Added to Cart!' : 'Add to Cart'}
               </button>
-              <button className="btn-outline" style={{ flex: 1, padding: 16 }}>
+              <button className="btn-outline" style={{ flex: 1, padding: 16 }} onClick={() => navigate('/contact')}>
                 Buy Now
               </button>
             </div>

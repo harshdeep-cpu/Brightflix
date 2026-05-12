@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { AuthContext, CartContext } from '../App';
 import LightsIntro from '../components/LightsIntro';
+import HomeAppliancesIntro from '../components/HomeAppliancesIntro';
+import SolarIntro from '../components/SolarIntro';
 import './Products.css';
 
 
@@ -22,8 +24,11 @@ const Products = () => {
   const [priceRange, setPriceRange]               = useState([0, 200000]);
   const [search, setSearch]                       = useState('');
   const [showLightsIntro, setShowLightsIntro] = useState(
-  searchParams.get('category') === 'Lights'
-);
+  searchParams.get('category') === 'Lights');
+  const [showHomeIntro, setShowHomeIntro] = useState(
+  searchParams.get('category') === 'Home Appliances');
+  const [showSolarIntro, setShowSolarIntro] = useState(
+  searchParams.get('category') === 'Solar');
 
   useEffect(() => {
     fetchCategories();
@@ -41,6 +46,12 @@ const Products = () => {
       setSelectedSub('All');
     }
   }, [selectedCategory, categories]);
+
+  useEffect(() => {
+  if (searchParams.get('category') === 'Lights') {
+    setShowLightsIntro(true);
+  }
+}, [searchParams]);
 
   const fetchCategories = async () => {
     try {
@@ -99,8 +110,9 @@ const Products = () => {
     });
 
     if (showLightsIntro) {
-  return <LightsIntro onComplete={() => setShowLightsIntro(false)} />;
-}
+  return <LightsIntro onComplete={() => setShowLightsIntro(false)} />;}
+if (showHomeIntro)    return <HomeAppliancesIntro onComplete={() => setShowHomeIntro(false)} />;
+if (showSolarIntro)   return <SolarIntro onComplete={() => setShowSolarIntro(false)} />;
 
   return (
     <div className="products-page">
@@ -135,8 +147,10 @@ const Products = () => {
                 <li key={cat._id}>
                   <button
                     className={`cat-btn ${selectedCategory === cat.name ? 'active' : ''}`}
-                    onClick={() => setSelectedCategory(cat.name)}
-                  >
+                    onClick={() => { if (cat.name === 'Lights')           setShowLightsIntro(true); 
+                      if (cat.name === 'Home Appliances')  setShowHomeIntro(true); 
+                      if (cat.name === 'Solar')            setShowSolarIntro(true); 
+                      setSelectedCategory(cat.name);}}>
                     <span>{cat.icon}</span> {cat.name}
                     <span className="cat-count">
                       {products.filter(p => p.category === cat.name).length}

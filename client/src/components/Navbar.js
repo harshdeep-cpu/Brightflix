@@ -59,12 +59,6 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {user?.isAdmin && (
-          <Link to="/admin" className="login-btn" style={{ color: 'var(--primary)' }}>
-            Admin
-          </Link>
-        )}
-
         {/* Right Actions */}
         {/* Right Actions */}
 <div className="navbar-actions">

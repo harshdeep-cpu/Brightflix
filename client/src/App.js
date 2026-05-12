@@ -16,20 +16,45 @@ import VideoIntro from './components/VideoIntro';
 export const CartContext = React.createContext();
 export const AuthContext = React.createContext();
 
-// 👇 Add ProtectedRoute here — after context exports
+// ✅ ProtectedRoute must be INSIDE a component to use useContext
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
   return user ? children : <Navigate to="/login" />;
 };
 
 function App() {
-  const [cartCount, setCartCount] = useState(0);
-  const [user, setUser] = useState(null);
+  // ✅ cartCount initialized from localStorage directly
+  const [cartCount, setCartCount] = useState(() => {
+    const saved = localStorage.getItem('brightflix_cart_count');
+    return saved ? parseInt(saved) : 0;
+  });
+  const [user, setUser]         = useState(null);
   const [showIntro, setShowIntro] = useState(true);
 
+  // ✅ sync cartCount to localStorage
+  useEffect(() => {
+    localStorage.setItem('brightflix_cart_count', cartCount);
+  }, [cartCount]);
+
+  // ✅ single useEffect — not nested
   useEffect(() => {
     const savedUser = localStorage.getItem('brightflix_user');
-    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedUser) {
+      const parsedUser = JSON.parse(savedUser);
+      setUser(parsedUser);
+
+      // fetch real cart count on app load
+      fetch('http://localhost:5000/api/cart', {
+        headers: { Authorization: `Bearer ${parsedUser.token}` },
+      })
+        .then(res => res.json())
+        .then(data => {
+          const count = data.items?.length || 0;
+          setCartCount(count);
+          localStorage.setItem('brightflix_cart_count', count);
+        })
+        .catch(() => {});
+    }
 
     const deviceType = /Android|iPhone|iPod|BlackBerry|Windows Phone|Mobile/i.test(navigator.userAgent)
       ? 'mobile'
@@ -62,30 +87,15 @@ function App() {
               <Navbar />
               <main>
                 <Routes>
-                  {/* Public routes */}
-                  <Route path="/"      element={<Home />}  />
+                  <Route path="/"      element={<Home />} />
                   <Route path="/login" element={<Login />} />
-
-                  {/* Protected routes 👇 */}
-                  <Route path="/products" element={
-                    <ProtectedRoute><Products /></ProtectedRoute>
-                  } />
-                  <Route path="/products/:id" element={
-                    <ProtectedRoute><ProductDetail /></ProtectedRoute>
-                  } />
-                  <Route path="/about" element={
-                    <ProtectedRoute><About /></ProtectedRoute>
-                  } />
-                  <Route path="/services" element={
-                    <ProtectedRoute><Services /></ProtectedRoute>
-                  } />
-                  <Route path="/contact" element={
-                    <ProtectedRoute><Contact /></ProtectedRoute>
-                  } />
+                  <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+                  <Route path="/products/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
+                  <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
+                  <Route path="/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
+                  <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+                  <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                   <Route path="/admin" element={<Admin />} />
-                  <Route path="/cart" element={
-                    <ProtectedRoute><Cart /></ProtectedRoute>
-                  } />
                 </Routes>
               </main>
               <Footer />

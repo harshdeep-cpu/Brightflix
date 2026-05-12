@@ -16,21 +16,25 @@ const Cart = () => {
   }, []);
 
   const fetchCart = async () => {
-    try {
-      setLoading(true);
-      const res  = await fetch('http://localhost:5000/api/cart', {
-        headers: { Authorization: `Bearer ${user?.token}` },
-      });
-      if (!res.ok) throw new Error('Failed to fetch cart');
-      const data = await res.json();
-      setCartItems(data.items || []);
-      setCartCount(data.items?.length || 0);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    const res = await fetch('http://localhost:5000/api/cart', {
+      headers: { Authorization: `Bearer ${user?.token}` },
+    });
+    if (!res.ok) throw new Error('Failed to fetch cart');
+    const data = await res.json();
+    setCartItems(data.items || []);
+
+    // 👇 sync count with actual DB items
+    const count = data.items?.length || 0;
+    setCartCount(count);
+    localStorage.setItem('brightflix_cart_count', count); // 👈 save to localStorage
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const updateQty = async (productId, quantity) => {
     if (quantity < 1) return removeItem(productId);
@@ -230,7 +234,7 @@ const Cart = () => {
               <button
   className="btn-primary"
   style={{ width: '100%', padding: 14, fontSize: '1rem' }}
-  onClick={() => navigate('/contact')}  // 👈 add this
+  onClick={() => navigate('/contact')} 
 >
   Proceed to Checkout →
 </button>
