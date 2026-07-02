@@ -44,7 +44,7 @@ function App() {
       setUser(parsedUser);
 
       // fetch real cart count on app load
-      fetch('http://localhost:5000/api/cart', {
+      fetch('https://brightflix.onrender.com/api/cart', {
         headers: { Authorization: `Bearer ${parsedUser.token}` },
       })
         .then(res => res.json())

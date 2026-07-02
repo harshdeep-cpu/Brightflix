@@ -18,7 +18,7 @@ const Cart = () => {
   const fetchCart = async () => {
   try {
     setLoading(true);
-    const res = await fetch('http://localhost:5000/api/cart', {
+    const res = await fetch('https://brightflix.onrender.com/api/cart', {
       headers: { Authorization: `Bearer ${user?.token}` },
     });
     if (!res.ok) throw new Error('Failed to fetch cart');
@@ -39,7 +39,7 @@ const Cart = () => {
   const updateQty = async (productId, quantity) => {
     if (quantity < 1) return removeItem(productId);
     try {
-      await fetch('http://localhost:5000/api/cart/update', {
+      await fetch('https://brightflix.onrender.com/api/cart/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const Cart = () => {
 
   const removeItem = async (productId) => {
     try {
-      await fetch(`http://localhost:5000/api/cart/remove/${productId}`, {
+      await fetch(`https://brightflix.onrender.com/api/cart/remove/${productId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${user?.token}` },
       });
@@ -64,7 +64,7 @@ const Cart = () => {
   const clearCart = async () => {
     if (!window.confirm('Clear entire cart?')) return;
     try {
-      await fetch('http://localhost:5000/api/cart/clear', {
+      await fetch('https://brightflix.onrender.com/api/cart/clear', {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${user?.token}` },
       });

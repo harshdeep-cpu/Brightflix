@@ -42,7 +42,7 @@ const Login = () => {
     setError('');
     try {
       const url = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const res = await fetch(`http://localhost:5000${url}`, {
+      const res = await fetch(`https://brightflix.onrender.com${url}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

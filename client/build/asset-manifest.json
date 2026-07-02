@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.ff55ab43.css",
-    "main.js": "/static/js/main.3f21bda7.js",
+    "main.css": "/static/css/main.ab30aa54.css",
+    "main.js": "/static/js/main.9ad2eedb.js",
     "static/media/brightflix-logo.png": "/static/media/brightflix-logo.3e72891e02d286e97ea8.png",
-    "static/media/Brightflix-icon.jpeg": "/static/media/Brightflix-icon.5493ae927ee843f15c9b.jpeg",
-    "static/media/Brightflix-text.jpeg": "/static/media/Brightflix-text.d292c44c42e724d6883a.jpeg",
+    "static/media/Brightflix-Text.png": "/static/media/Brightflix-Text.b8ef703130aa00c85812.png",
     "index.html": "/index.html",
-    "main.ff55ab43.css.map": "/static/css/main.ff55ab43.css.map",
-    "main.3f21bda7.js.map": "/static/js/main.3f21bda7.js.map"
+    "main.ab30aa54.css.map": "/static/css/main.ab30aa54.css.map",
+    "main.9ad2eedb.js.map": "/static/js/main.9ad2eedb.js.map"
   },
   "entrypoints": [
-    "static/css/main.ff55ab43.css",
-    "static/js/main.3f21bda7.js"
+    "static/css/main.ab30aa54.css",
+    "static/js/main.9ad2eedb.js"
   ]
 }

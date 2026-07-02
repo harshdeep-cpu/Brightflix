@@ -55,7 +55,7 @@ const Home = () => {
   const fetchCategories = async () => {                    // ✅ proper async function
     try {
       setLoadingCats(true);
-      const res  = await fetch('http://localhost:5000/api/categories');
+      const res  = await fetch('https://brightflix.onrender.com/api/categories');
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();
       setCategories(Array.isArray(data) ? data : []);
@@ -74,7 +74,7 @@ const Home = () => {
   const fetchProducts = async () => {
     try {
       setLoadingProducts(true);
-      const res  = await fetch('http://localhost:5000/api/products?featured=true&limit=8');
+      const res  = await fetch('https://brightflix.onrender.com/api/products?featured=true&limit=8');
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();
       setProducts(data.products || data);

@@ -59,8 +59,6 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Right Actions */}
-        {/* Right Actions */}
 <div className="navbar-actions">
   <div className="search-box">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

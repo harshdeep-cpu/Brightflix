@@ -42,7 +42,7 @@ const Admin = () => {
   // ── Fetch functions ──
   const fetchProducts = async () => {
     try {
-      const res  = await fetch('http://localhost:5000/api/products');
+      const res  = await fetch('https://brightflix.onrender.com/api/products');
       const data = await res.json();
       setProducts(data.products || data);
     } catch (err) {
@@ -52,7 +52,7 @@ const Admin = () => {
 
   const fetchCategories = async () => {
     try {
-      const res  = await fetch('http://localhost:5000/api/categories');
+      const res  = await fetch('https://brightflix.onrender.com/api/categories');
       const data = await res.json();
       setCategories(data);
     } catch (err) {
@@ -99,7 +99,7 @@ const Admin = () => {
       if (imageFiles.length > 0) {
         const fd = new FormData();
         imageFiles.forEach(f => fd.append('images', f));
-        const res  = await fetch('http://localhost:5000/api/upload/images', {
+        const res  = await fetch('https://brightflix.onrender.com/api/upload/images', {
           method: 'POST',
           headers: { Authorization: `Bearer ${user.token}` },
           body: fd,
@@ -110,7 +110,7 @@ const Admin = () => {
       if (videoFile) {
         const fd = new FormData();
         fd.append('video', videoFile);
-        const res  = await fetch('http://localhost:5000/api/upload/video', {
+        const res  = await fetch('https://brightflix.onrender.com/api/upload/video', {
           method: 'POST',
           headers: { Authorization: `Bearer ${user.token}` },
           body: fd,
@@ -136,7 +136,7 @@ const Admin = () => {
         image:  imageUrls[0] || form.image,
         video:  videoUrl,
       };
-      const url    = editId ? `http://localhost:5000/api/products/${editId}` : 'http://localhost:5000/api/products';
+      const url    = editId ? `https://brightflix.onrender.com/api/products/${editId}` : 'https://brightflix.onrender.com/api/products';
       const method = editId ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -168,7 +168,7 @@ const Admin = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this product?')) return;
-    await fetch(`http://localhost:5000/api/products/${id}`, {
+    await fetch(`https://brightflix.onrender.com/api/products/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${user.token}` },
     });
@@ -179,7 +179,7 @@ const Admin = () => {
   const handleCatSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url    = editCatId ? `http://localhost:5000/api/categories/${editCatId}` : 'http://localhost:5000/api/categories';
+      const url    = editCatId ? `https://brightflix.onrender.com/api/categories/${editCatId}` : 'https://brightflix.onrender.com/api/categories';
       const method = editCatId ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -200,7 +200,7 @@ const Admin = () => {
 
   const handleCatDelete = async (id) => {
     if (!window.confirm('Delete this category?')) return;
-    await fetch(`http://localhost:5000/api/categories/${id}`, {
+    await fetch(`https://brightflix.onrender.com/api/categories/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${user.token}` },
     });
@@ -212,8 +212,8 @@ const Admin = () => {
     if (!subForm.name) return;
     try {
       const url    = editSubId
-        ? `http://localhost:5000/api/categories/${catId}/subcategories/${editSubId}`
-        : `http://localhost:5000/api/categories/${catId}/subcategories`;
+        ? `https://brightflix.onrender.com/api/categories/${catId}/subcategories/${editSubId}`
+        : `https://brightflix.onrender.com/api/categories/${catId}/subcategories`;
       const method = editSubId ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
@@ -235,7 +235,7 @@ const Admin = () => {
 
   const handleSubDelete = async (catId, subId) => {
     if (!window.confirm('Delete this subcategory?')) return;
-    await fetch(`http://localhost:5000/api/categories/${catId}/subcategories/${subId}`, {
+    await fetch(`https://brightflix.onrender.com/api/categories/${catId}/subcategories/${subId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${user.token}` },
     });

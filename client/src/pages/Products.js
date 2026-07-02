@@ -55,7 +55,7 @@ const Products = () => {
 
   const fetchCategories = async () => {
     try {
-      const res  = await fetch('http://localhost:5000/api/categories');
+      const res  = await fetch('https://brightflix.onrender.com/api/categories');
       const data = await res.json();
       setCategories(data);
     } catch (err) {
@@ -66,7 +66,7 @@ const Products = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res  = await fetch('http://localhost:5000/api/products');
+      const res  = await fetch('https://brightflix.onrender.com/api/products');
       const data = await res.json();
       setProducts(data.products || data);
     } catch (err) {
@@ -79,7 +79,7 @@ const Products = () => {
   // Add to cart function passed to ProductCard
   const handleAddToCart = async (productId, quantity = 1) => {
     try {
-      const res = await fetch('http://localhost:5000/api/cart/add', {
+      const res = await fetch('https://brightflix.onrender.com/api/cart/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

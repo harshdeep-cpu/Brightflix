@@ -17,7 +17,7 @@ const isAdmin = (req, res, next) => {
 // Upload multiple images (max 6)
 router.post('/images', isAdmin, upload.array('images', 6), (req, res) => {
   try {
-    const urls = req.files.map(f => `http://localhost:5000/uploads/images/${f.filename}`);
+    const urls = req.files.map(f => `https://brightflix.onrender.com/uploads/images/${f.filename}`);
     res.json({ urls });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -27,7 +27,7 @@ router.post('/images', isAdmin, upload.array('images', 6), (req, res) => {
 // Upload single video
 router.post('/video', isAdmin, upload.single('video'), (req, res) => {
   try {
-    const url = `http://localhost:5000/uploads/videos/${req.file.filename}`;
+    const url = `https://brightflix.onrender.com/uploads/videos/${req.file.filename}`;
     res.json({ url });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -32,7 +32,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         await onAddToCart(product._id, 1);
       } else {
         // Direct API call (used when ProductCard is used outside Products.js)
-        const res = await fetch('http://localhost:5000/api/cart/add', {
+        const res = await fetch('https://brightflix.onrender.com/api/cart/add', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
